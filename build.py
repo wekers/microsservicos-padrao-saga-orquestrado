@@ -7,7 +7,9 @@ threads = []
 def build_application(app):
     threads.append(app)
     print("Building application {}".format(app))
-    os.system("cd {} && gradle build -x test".format(app))
+#   os.system("cd {} && gradle build -x test".format(app))
+    os.system('cd {} && gradle -Dorg.gradle.java.home="/home/fernando/.jdks/jbr-17.0.12/" build -x test'.format(app))
+
     print("Application {} finished building!".format(app))
     threads.remove(app)
 
