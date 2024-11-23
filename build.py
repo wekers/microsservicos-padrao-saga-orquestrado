@@ -7,8 +7,20 @@ threads = []
 def build_application(app):
     threads.append(app)
     print("Building application {}".format(app))
-#   os.system("cd {} && gradle build -x test".format(app))
-    os.system('cd {} && gradle -Dorg.gradle.java.home="/home/fernando/.jdks/jbr-17.0.12/" build -x test'.format(app))
+
+
+    # ** => Set local of jdk_path or let empty to use default jdk system $JAVA_HOME **
+    #jdk_path = os.path.expanduser("")
+    jdk_path = os.path.expanduser("~/.jdks/jbr-17.0.12/")
+
+
+    # Check if the JDK path is empty
+    if not jdk_path.strip():  # `.strip()` ensures we catch cases of whitespace
+        print("JDK path is empty, running with JDK System default $JAVA_HOME")
+        os.system("cd {} && gradle build -x test".format(app))
+    else:
+        print(f"Using JDK path: {jdk_path}")
+        os.system("cd {} && gradle -Dorg.gradle.java.home=\"{}\" build -x test".format(app, jdk_path))
 
     print("Application {} finished building!".format(app))
     threads.remove(app)
