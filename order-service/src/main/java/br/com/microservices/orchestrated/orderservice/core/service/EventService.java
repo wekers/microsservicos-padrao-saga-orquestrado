@@ -7,12 +7,11 @@ import br.com.microservices.orchestrated.orderservice.core.repository.EventRepos
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ObjectUtils;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static org.springframework.util.ObjectUtils.*;
+import static org.springframework.util.ObjectUtils.isEmpty;
 
 
 @Slf4j
@@ -23,7 +22,7 @@ public class EventService {
     private final EventRepository repository;
 
     public void notifyEnding(Event event) {
-        event.setOrderId(event.getOrderId());
+        event.setOrderId(event.getPayload().getId());
         event.setCreatedAt(LocalDateTime.now());
         save(event);
         log.info("Order {} with saga notified! TransactionID: {}", event.getOrderId(), event.getTransactionId());
@@ -46,13 +45,13 @@ public class EventService {
     private Event findByOrderId(String orderId) {
         return repository
                 .findTop1ByOrderIdOrderByCreatedAtDesc(orderId)
-                .orElseThrow( () -> new ValidationException("Event not found by orderId: " + orderId));
+                .orElseThrow( () -> new ValidationException("Event not found by orderId"));
     }
 
     private Event findByTransactionId(String transactionId) {
         return repository
                 .findTop1ByTransactionIdOrderByCreatedAtDesc(transactionId)
-                .orElseThrow( () -> new ValidationException("Event not found by TransactionId: " + transactionId));
+                .orElseThrow(() -> new ValidationException("Event not found by TransactionId"));
     }
 
     public void validateEmptyFilters(EventFilters filters) {
