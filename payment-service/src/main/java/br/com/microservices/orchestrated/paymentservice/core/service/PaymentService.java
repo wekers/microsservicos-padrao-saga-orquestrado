@@ -146,7 +146,7 @@ public class PaymentService {
 
     private Payment findByOrderIdAndTransactionId(Event event) {
         return paymentRepository.findByOrderIdAndTransactionId(event.getPayload().getId(), event.getTransactionId())
-                .orElseThrow(() -> new ValidationException("Payment not found by orderId and transactionId."));
+                .orElseThrow(() -> new ValidationException("Payment don't found by orderId and transactionId."));
     }
 
     public void save(Payment payment) {
