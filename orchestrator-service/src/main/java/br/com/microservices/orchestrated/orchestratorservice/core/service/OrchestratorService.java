@@ -39,7 +39,7 @@ public class OrchestratorService {
         event.setSource(ORCHESTRATOR);
         event.setStatus(SUCCESS);
         log.info("SAGA FINISHED SUCCESSFULLY FOR EVENT: {}", event.getId());
-        addHistory(event, "Saga finished with errors!");
+        addHistory(event, "Saga finished successfully!");
         notifyFinishedSaga(event);
     }
 
@@ -47,7 +47,7 @@ public class OrchestratorService {
         event.setSource(ORCHESTRATOR);
         event.setStatus(FAIL);
         log.info("SAGA FINISHED WITH ERRORS FOR EVENT: {}", event.getId());
-        addHistory(event, "Saga finished successfully!");
+        addHistory(event, "Saga finished with errors!");
         notifyFinishedSaga(event);
     }
 
